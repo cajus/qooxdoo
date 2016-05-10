@@ -117,10 +117,9 @@ mkdir -p "$TARGET"
 
 # Run all build_ methods in background
 for build in $(declare -f | sed -n "s/^\(build_[^ ]*\).*) *$/\1/p"); do
-#  $build &
-  $build
+  $build &
 done
 
-#wait
+wait
 
 find $TARGET -name '.gitignore' -exec rm {} \;
