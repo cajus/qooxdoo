@@ -104,8 +104,8 @@ function build_manual {
   (
     cd documentation/manual
     make html && cp -r build/html/* "$TARGET"
-    make latexpdf && cp build/latex/qooxdoo.pdf "$TARGET"
-    make epub && cp build/epub/qooxdoo.epub "$TARGET"
+    #make latexpdf && cp build/latex/qooxdoo.pdf "$TARGET"
+    #make epub && cp build/epub/qooxdoo.epub "$TARGET"
   )
 }
 
@@ -119,4 +119,6 @@ mkdir -p "$TARGET"
 for build in $(declare -f | sed -n "s/^\(build_[^ ]*\).*) *$/\1/p"); do
   $build &
 done
+
+find -name '.gitignore' $TARGET -exec rm {} \;
 wait
