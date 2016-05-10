@@ -7,8 +7,8 @@ GENERATE="./generate.py -sI"
 TARGET="$PWD/build"
 MASTER="local-test"
 
-if [ "$encrypted_809ae3ade92d_key" = "" ]; then
-  echo "Skipping site generation for non regular build."
+if [ "$QXBROWSER" != "" ]; then
+  echo "Skipping site generation for regular build."
   exit 1
 fi
 
