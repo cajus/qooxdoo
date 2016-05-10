@@ -123,4 +123,4 @@ done
 
 #wait
 
-find -name '.gitignore' $TARGET -exec rm {} \;
+find $TARGET -name '.gitignore' -exec rm {} \;
