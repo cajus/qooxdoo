@@ -5,7 +5,7 @@
 #
 GENERATE="./generate.py -sI"
 TARGET="$PWD/build"
-MASTER="build-site"
+MASTER="local-test"
 
 if [ "$encrypted_809ae3ade92d_key" = "" ]; then
   echo "Skipping site generation for non regular build."
