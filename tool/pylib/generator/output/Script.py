@@ -31,6 +31,7 @@ from misc.Trie              import Trie
 from misc.ExtMap            import ExtMap
 from generator.output.Package import Package
 from generator.resource.CombinedImage import CombinedImage
+from generator.resource.FontMap import FontMap
 
 class Script(object):
 
@@ -122,6 +123,14 @@ class Script(object):
         # Flatten out the resource representation
         for resid, res in result.items():
             result[resid] = res.toResinfo()
+
+            # Unify font map aliases
+            if isinstance(res, FontMap):
+                for glyphname, code in res.mapping.iteritems():
+                  fdsc = "@%s/%s" % (res.alias, glyphname)
+                  if not fdsc in result:
+                      result[fdsc] = code
+                del result[resid][4]
 
         # ExtMap returns nested maps
         if formatAsTree:

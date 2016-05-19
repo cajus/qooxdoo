@@ -40,7 +40,7 @@ class FontMap(Resource):
         if path:
             self.parseMetaFile(path)
 
-    FILE_EXTENSIONS = "ttf woff woff2 eot".split()
+    FILE_EXTENSIONS = "ttf woff woff2 eot otf".split()
     FILE_EXTENSIONPATT = re.compile(r'\.(%s)$' % "|".join(FILE_EXTENSIONS), re.I)
 
     def parseMetaFile(self, path):
