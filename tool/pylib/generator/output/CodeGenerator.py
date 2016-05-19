@@ -478,6 +478,7 @@ class CodeGenerator(object):
                 data["locales"]      = package.data.locales
             data = json.dumpsCode(data)
             data += ';\n'
+
             return data
 
 

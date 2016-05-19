@@ -29,6 +29,7 @@ from generator.code.qcEnvClass    import qcEnvClass
 from generator.resource.Resource  import Resource
 from generator.resource.Image     import Image
 from generator.resource.CombinedImage    import CombinedImage
+from generator.resource.FontMap   import FontMap
 from generator.config.Manifest    import Manifest
 from generator                    import Context as context
 
@@ -319,6 +320,8 @@ class Library(object):
                     else:
                         res = Image(fpath)
                     res.analyzeImage()
+                elif FontMap.isFontMap(fpath):
+                    res = FontMap(fpath)
                 else:
                     res = Resource(fpath)
 
