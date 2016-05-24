@@ -172,10 +172,11 @@ qx.Class.define("playground.view.Editor",
 
         // create the editor
         var editor = this.__ace = ace.edit(container);
+        editor.setTheme("ace/theme/eclipse");
+        editor.$blockScrolling = Infinity;
 
         // set javascript mode
-        var JavaScriptMode = require("ace/mode/javascript").Mode;
-        editor.getSession().setMode(new JavaScriptMode());
+        editor.getSession().setMode("ace/mode/javascript");
 
         // configure the editor
         var session = editor.getSession();
