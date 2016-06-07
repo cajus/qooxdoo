@@ -583,7 +583,7 @@ qx.Class.define("qx.ui.basic.Image",
 
       "default" : function(source)
       {
-        var isFont = qx.lang.String.startsWith(source, "@");
+        var isFont = source && qx.lang.String.startsWith(source, "@");
 
         if (isFont) {
           this.__setMode("font");
@@ -722,7 +722,7 @@ qx.Class.define("qx.ui.basic.Image",
       }
 
       // Optimize case for enabled changes when no disabled image was found
-      var isFont = qx.lang.String.startsWith(source, "@");
+      var isFont = source && qx.lang.String.startsWith(source, "@");
       if (!isFont && el.getSource() === source) {
         return;
       }
@@ -814,7 +814,7 @@ qx.Class.define("qx.ui.basic.Image",
      * @param source {String} source path
      */
     __setSource: function (el, source) {
-      var isFont = qx.lang.String.startsWith(source, "@");
+      var isFont = source && qx.lang.String.startsWith(source, "@");
 
       if (isFont) {
         var ResourceManager = qx.util.ResourceManager.getInstance();
