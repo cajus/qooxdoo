@@ -365,7 +365,6 @@ qx.Class.define("qx.ui.basic.Image",
     {
       var scale;
       var tagName;
-      var rich;
       var clazz = qx.html.Image;
 
       if (mode == "font")
