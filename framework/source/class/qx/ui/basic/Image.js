@@ -818,7 +818,7 @@ qx.Class.define("qx.ui.basic.Image",
       if (isFont) {
         var ResourceManager = qx.util.ResourceManager.getInstance();
         var font = qx.theme.manager.Font.getInstance().resolve(source.match(/@([^/]+)/)[1]);
-        el.setStyle(font.getStyles());
+        el.setStyles(font.getStyles());
         el.setStyle("font-size", (this.__width > this.__height ? this.__height : this.__width) + "px");
         el.setValue(String.fromCharCode(ResourceManager.getData(source)[2]));
         return;
