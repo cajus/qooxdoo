@@ -101,6 +101,12 @@
       [
         {
           "uri" : "./resource/${APPLICATION}/css/indigo.css"
+        },
+        {
+          "uri" : "./resource/${APPLICATION}/editor/lib/codemirror.css"
+        },
+        {
+          "uri" : "./resource/${APPLICATION}/editor/theme/eclipse.css"
         }
       ]
     },
@@ -120,6 +126,18 @@
       [
         {
           "uri" : "./resource/${APPLICATION}/css/indigo.css"
+        },
+        {
+          "uri" : "./resource/${APPLICATION}/editor/lib/codemirror.css"
+        },
+        {
+          "uri" : "./resource/${APPLICATION}/editor/theme/eclipse.css"
+        },
+        {
+          "uri" : "./resource/${APPLICATION}/editor/addon/hint/show-hint.css"
+        },
+        {
+          "uri" : "./resource/${APPLICATION}/editor/addon/lint/lint.css"
         }
       ],
       "run": ["compile-scss"]
@@ -132,6 +150,12 @@
       [
         {
           "uri" : "./resource/${APPLICATION}/css/indigo.css"
+        },
+        {
+          "uri" : "./resource/${APPLICATION}/editor/lib/codemirror.css"
+        },
+        {
+          "uri" : "./resource/${APPLICATION}/editor/theme/eclipse.css"
         }
       ],
       "run": ["compile-scss"]
@@ -149,6 +173,12 @@
       [
         {
           "uri" : "./resource/${APPLICATION}/css/indigo.css"
+        },
+        {
+          "uri" : "./resource/${APPLICATION}/editor/lib/codemirror.css"
+        },
+        {
+          "uri" : "./resource/${APPLICATION}/editor/theme/eclipse.css"
         }
       ],
       "run": ["compile-scss"]

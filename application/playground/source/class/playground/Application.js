@@ -188,7 +188,7 @@ qx.Class.define("playground.Application",
       this.__editor.addListener("disableHighlighting", function() {
         this.__toolbar.enableHighlighting(false);
       }, this);
-      playground.view.Editor.loadAce(function() {
+      playground.view.Editor.loadCodemirror(function() {
         this.init();
       }, this);
 

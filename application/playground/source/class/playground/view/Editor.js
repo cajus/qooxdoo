@@ -21,7 +21,10 @@
  * Container for the source code editor.
  *
  * @asset(playground/*)
- * @ignore(ace.*, require)
+ * @asset(playground/editor/lib/*)
+ * @asset(playground/editor/mode/*)
+ * @asset(playground/editor/addon/*)
+ * @ignore(CodeMirror.*, require)
  */
 qx.Class.define("playground.view.Editor",
 {
@@ -29,11 +32,14 @@ qx.Class.define("playground.view.Editor",
   include : qx.ui.core.MBlocker,
 
   statics : {
-    loadAce : function(clb, ctx) {
+    loadCodemirror : function(clb, ctx) {
       var resource = [
-        "playground/editor/ace.js",
-        "playground/editor/theme-eclipse.js",
-        "playground/editor/mode-javascript.js"
+        "playground/editor/lib/codemirror.js",
+        "playground/editor/mode/javascript/javascript.js",
+        "playground/editor/addon/edit/matchbrackets.js",
+        "playground/editor/addon/hint/jshint.js",
+        "playground/editor/addon/lint/lint.js",
+        "playground/editor/addon/lint/javascript-lint.js",
       ];
       var load = function(list) {
         if (list.length == 0) {
@@ -74,7 +80,7 @@ qx.Class.define("playground.view.Editor",
     __textarea : null,
     __highlighted : null,
     __editor : null,
-    __ace : null,
+    __codemirror : null,
     __errorLabel : null,
 
     /**
@@ -136,7 +142,7 @@ qx.Class.define("playground.view.Editor",
       var opera = qx.core.Environment.get("engine.name") == "opera";
 
       // FF2 does not have that...
-      if (!document.createElement("div").getBoundingClientRect || badIE || opera || !window.ace) {
+      if (!document.createElement("div").getBoundingClientRect || badIE || opera || !window.CodeMirror) {
         this.fireEvent("disableHighlighting");
         highlightDisabled = true;
       } else {
@@ -149,7 +155,7 @@ qx.Class.define("playground.view.Editor",
 
       // override the focus border CSS of the editor
       qx.bom.Stylesheet.createElement(
-        ".ace_editor {border: 0px solid #9F9F9F !important;}"
+        ".codemirror_editor {border: 0px solid #9F9F9F !important;}"
       );
 
       // chech the initial highlight state
@@ -162,35 +168,40 @@ qx.Class.define("playground.view.Editor",
      * This code part uses the ajax.org code editor library to add a
      * syntax-highlighting editor as an textarea replacement
      *
-     * @ignore(ace.edit, require)
+     * @ignore(CodeMirror.edit, require)
      */
     __onEditorAppear : function() {
-      // timout needed for chrome to not get the ACE layout wrong and show the
+      // timout needed for chrome to not get the CodeMirror layout wrong and show the
       // text on top of the gutter
       qx.event.Timer.once(function() {
         var container = this.__editor.getContentElement().getDomElement();
 
         // create the editor
-        var editor = this.__ace = ace.edit(container);
-
-        // set javascript mode
-        var JavaScriptMode = require("ace/mode/javascript").Mode;
-        editor.getSession().setMode(new JavaScriptMode());
-
-        // configure the editor
-        var session = editor.getSession();
-        session.setUseSoftTabs(true);
-        session.setTabSize(2);
+        var editor = this.__codemirror = CodeMirror(function(elt) {
+          container.parentNode.replaceChild(elt, container);
+        }, {
+          theme: "eclipse",
+          lineNumbers: true,
+          matchBrackets: true,
+          tabSize: 2,
+          mode: "javascript",
+          gutters: ["CodeMirror-lint-markers"],
+          lint: true
+        });
 
         // copy the inital value
-        session.setValue(this.__textarea.getValue() || "");
+        editor.setValue(this.__textarea.getValue() || "");
+        
+        // Adjust initial size
+        var bounds = this.__editor.getBounds();
+        editor.setSize(bounds.width, bounds.height);
 
         var self = this;
         // append resize listener
-        this.__editor.addListener("resize", function() {
+        this.__editor.addListener("resize", function(ev) {
           // use a timeout to let the layout queue apply its changes to the dom
           window.setTimeout(function() {
-            self.__ace.resize();
+            self.__codemirror.setSize(ev.getData().width, ev.getData().height);
           }, 0);
         });
       }, this, 500);
@@ -202,8 +213,8 @@ qx.Class.define("playground.view.Editor",
      * @return {String} The current set text.
      */
     getCode : function() {
-      if (this.__highlighted && this.__ace) {
-        return this.__ace.getSession().getValue();
+      if (this.__highlighted && this.__codemirror) {
+        return this.__codemirror.getValue();
       } else {
         return this.__textarea.getValue();
       }
@@ -215,13 +226,11 @@ qx.Class.define("playground.view.Editor",
      * @param code {String} The new code.
      */
     setCode : function(code) {
-      if (this.__ace) {
-        this.__ace.getSession().setValue(code);
+      if (this.__codemirror) {
+        this.__codemirror.setValue(code);
 
         // move cursor to start to prevent scrolling to the bottom
-        this.__ace.renderer.scrollToX(0);
-        this.__ace.renderer.scrollToY(0);
-        this.__ace.selection.moveCursorFileStart();
+        this.__codemirror.execCommand("goDocStart");
       }
       this.__textarea.setValue(code);
     },
@@ -249,8 +258,8 @@ qx.Class.define("playground.view.Editor",
         this.__textarea.setVisibility("excluded");
 
         // copy the value, if the editor already availabe
-        if (this.__ace) {
-          this.__ace.getSession().setValue(this.__textarea.getValue());
+        if (this.__codemirror) {
+          this.__codemirror.setValue(this.__textarea.getValue());
         }
       } else {
         // change the visibility
@@ -258,8 +267,8 @@ qx.Class.define("playground.view.Editor",
         this.__textarea.setVisibility("visible");
 
         // copy the value, if the editor already availabe
-        if (this.__ace) {
-          this.__textarea.setValue(this.__ace.getSession().getValue());
+        if (this.__codemirror) {
+          this.__textarea.setValue(this.__codemirror.getValue());
         }
       }
     }
@@ -276,6 +285,6 @@ qx.Class.define("playground.view.Editor",
   destruct : function()
   {
     this._disposeObjects("__textarea");
-    this.__ace = null;
+    this.__codemirror = null;
   }
 });
