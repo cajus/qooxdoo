@@ -243,6 +243,17 @@ qx.Class.define("qx.ui.basic.Image",
       this.__setSource(el, source);
     },
 
+    // overridden
+    _applyTextColor : function(value)
+    {
+      if (this.__getMode() === "font") {
+        if (value) {
+          this.getContentElement().setStyle("color", qx.theme.manager.Color.getInstance().resolve(value));
+        } else {
+          this.getContentElement().removeStyle("color");
+        }
+      }
+    },
 
     // overridden
     _applyPadding : function(value, old, name)
@@ -337,6 +348,11 @@ qx.Class.define("qx.ui.basic.Image",
       if (this.__mode == null)
       {
         var source = this.getSource();
+
+        if (source && qx.lang.String.startsWith(source, "@")) {
+          this.__mode = "font";
+        }
+
         var isPng = false;
         if (source != null) {
           isPng = qx.lang.String.endsWith(source, ".png");
