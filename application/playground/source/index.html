@@ -222,6 +222,26 @@ button1.addListener("execute", function(e) {
 
 <!-- ********************************************************************** -->
 
+<textarea class="qx_samples" title="FontAwesome-ria">// Create a button
+var button1 = new qx.ui.form.Button("First Button", "@FontAwesome/heart");
+
+// Document is the application root
+var doc = this.getRoot();
+
+// Add button to document at fixed coordinates
+doc.add(button1,
+{
+  left : 100,
+  top  : 50
+});
+
+// Add an event listener
+button1.addListener("execute", function(e) {
+  alert("Hello World!");
+});</textarea>
+
+<!-- ********************************************************************** -->
+
 <div id="compare_div1" style="visibility: hidden;"></div>
 <div id="compare_div2" style="visibility: hidden;"></div>
 

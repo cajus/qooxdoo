@@ -57,6 +57,23 @@ qx.Theme.define("playground.theme.Font",
           ]
         }
       ]
+    },
+
+    "FontAwesome": {
+      size: 40,
+      lineHeight: 1,
+      family: ["FontAwesome"],
+      sources: [
+        {
+          family: "FontAwesome",
+          source: [
+            "foo/fonts/fontawesome-webfont.eot",
+            "foo/fonts/fontawesome-webfont.woff2",
+            "foo/fonts/fontawesome-webfont.woff",
+            "foo/fonts/fontawesome-webfont.ttf"
+          ]
+        }
+      ]
     }
   }
 });
