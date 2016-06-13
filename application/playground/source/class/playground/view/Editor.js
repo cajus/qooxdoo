@@ -40,6 +40,7 @@ qx.Class.define("playground.view.Editor",
         "playground/editor/addon/hint/jshint.js",
         "playground/editor/addon/lint/lint.js",
         "playground/editor/addon/lint/javascript-lint.js",
+        "playground/editor/addon/selection/active-line.js",
       ];
       var load = function(list) {
         if (list.length == 0) {
@@ -183,6 +184,7 @@ qx.Class.define("playground.view.Editor",
           theme: "eclipse",
           lineNumbers: true,
           matchBrackets: true,
+          styleActiveLine: true,
           tabSize: 2,
           mode: "javascript",
           gutters: ["CodeMirror-lint-markers"],
