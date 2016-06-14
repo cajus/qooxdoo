@@ -137,6 +137,9 @@
           "uri" : "./resource/${APPLICATION}/editor/addon/hint/show-hint.css"
         },
         {
+          "uri" : "./resource/${APPLICATION}/editor/addon/fold/foldgutter.css"
+        },
+        {
           "uri" : "./resource/${APPLICATION}/editor/addon/lint/lint.css"
         }
       ],

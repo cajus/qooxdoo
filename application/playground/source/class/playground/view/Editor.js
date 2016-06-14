@@ -24,6 +24,7 @@
  * @asset(playground/editor/lib/*)
  * @asset(playground/editor/mode/*)
  * @asset(playground/editor/addon/*)
+ * @asset(playground/editor/addon/*)
  * @ignore(CodeMirror.*, require)
  */
 qx.Class.define("playground.view.Editor",
@@ -41,6 +42,13 @@ qx.Class.define("playground.view.Editor",
         "playground/editor/addon/lint/lint.js",
         "playground/editor/addon/lint/javascript-lint.js",
         "playground/editor/addon/selection/active-line.js",
+        "playground/editor/addon/display/rulers.js",
+        "playground/editor/addon/fold/foldcode.js",
+        "playground/editor/addon/fold/foldgutter.js",
+        "playground/editor/addon/fold/brace-fold.js",
+        "playground/editor/addon/fold/xml-fold.js",
+        "playground/editor/addon/fold/markdown-fold.js",
+        "playground/editor/addon/fold/comment-fold.js"
       ];
       var load = function(list) {
         if (list.length == 0) {
@@ -177,18 +185,27 @@ qx.Class.define("playground.view.Editor",
       qx.event.Timer.once(function() {
         var container = this.__editor.getContentElement().getDomElement();
 
+        var ruler = [{color: "#E0E0E0", column: 80, lineStyle: "dashed"}];
+
         // create the editor
         var editor = this.__codemirror = CodeMirror(function(elt) {
           container.parentNode.replaceChild(elt, container);
         }, {
           theme: "eclipse",
           lineNumbers: true,
+          lineWrapping: true,
           matchBrackets: true,
           styleActiveLine: true,
           tabSize: 2,
           mode: "javascript",
-          gutters: ["CodeMirror-lint-markers"],
-          lint: true
+          viewportMargin : 100,
+          foldGutter: true,
+          foldOptions: {
+            minFoldSize: 5
+          },
+          lint: true,
+          gutters: ["CodeMirror-lint-markers", "CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+          rulers : ruler
         });
 
         // copy the inital value
@@ -203,7 +220,7 @@ qx.Class.define("playground.view.Editor",
         this.__editor.addListener("resize", function(ev) {
           // use a timeout to let the layout queue apply its changes to the dom
           window.setTimeout(function() {
-            self.__codemirror.setSize(ev.getData().width, ev.getData().height);
+            self.__codemirror.setSize("100%", ev.getData().height);
           }, 0);
         });
       }, this, 500);
