@@ -197,7 +197,6 @@ def runFontMap(jobconf, confObj):
     console.indent()
 
     done = []
-    name_check = re.compile(r"^_\d+$")
 
     fonts = jobconf.get("font-map/fonts", {})
     for font, fontspec in fonts.iteritems():
@@ -217,7 +216,7 @@ def runFontMap(jobconf, confObj):
 
         for glyph in fo:
             go = fo[glyph]
-            if go.unicode > 0 and not name_check.match(go.glyphname):
+            if go.unicode > 0:
                 config["mapping"][go.glyphname] = go.unicode
 
         # store meta data for this font
