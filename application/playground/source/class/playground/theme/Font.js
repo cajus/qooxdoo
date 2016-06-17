@@ -19,6 +19,10 @@
 ************************************************************************* */
 
 /**
+ * @asset(playground/fonts/*)
+ */
+
+/**
  * The custom font theme for the playground.
  */
 qx.Theme.define("playground.theme.Font",
@@ -62,15 +66,16 @@ qx.Theme.define("playground.theme.Font",
     "FontAwesome": {
       size: 40,
       lineHeight: 1,
+      comparisonString : "\uf1e3\uf1f7\uf11b\uf19d",
       family: ["FontAwesome"],
       sources: [
         {
           family: "FontAwesome",
           source: [
-            "foo/fonts/fontawesome-webfont.eot",
-            "foo/fonts/fontawesome-webfont.woff2",
-            "foo/fonts/fontawesome-webfont.woff",
-            "foo/fonts/fontawesome-webfont.ttf"
+            "playground/fonts/fontawesome-webfont.eot",
+            "playground/fonts/fontawesome-webfont.woff2",
+            "playground/fonts/fontawesome-webfont.woff",
+            "playground/fonts/fontawesome-webfont.ttf"
           ]
         }
       ]
