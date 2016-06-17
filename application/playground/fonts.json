@@ -2,7 +2,7 @@
 {
   "jobs" :
   {
-    
+
     "make-font-map" :
     {
       "desc" : "Build a font mapping from glyphname to unicode id",
@@ -12,7 +12,7 @@
         "RESPATH" : "./source/resource",
         "QXRESPATH" : "${QOOXDOO_PATH}/framework/source/resource"
       },
-   
+
       "font-map" :
       {
         "fonts" :
