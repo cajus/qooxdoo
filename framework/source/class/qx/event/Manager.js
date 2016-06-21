@@ -924,6 +924,11 @@ qx.Class.define("qx.event.Manager",
       this.__registration = this.__handlerCache = null;
     },
 
+    /**
+     * Add a specific event id to the internal blacklist.
+     *
+     * @param uid {Number} unique event id
+     */
     __addToBlacklist : function(uid) {
       if (this.__blacklist === null) {
         this.__blacklist = {};
@@ -935,8 +940,8 @@ qx.Class.define("qx.event.Manager",
     /**
      * Check if the event with the given id has been removed and is therefore blacklisted for event handling
      *
-     * @param uid {number} unique event id
-     * @returns {boolean}
+     * @param uid {Number} unique event id
+     * @return {Boolean}
      */
     isBlacklisted : function(uid) {
       return (this.__blacklist !== null && this.__blacklist[uid] === true);

@@ -402,13 +402,18 @@ qx.Class.define("qx.data.controller.List",
      * be done by the binding.
      */
     __inChangeModel: false,
+
+    /**
+     * Event handler that acts on model changes.
+     */
     __changeModel: function() {
       if (this.__inChangeModel) {
         return;
       }
 
       this.__inChangeModel = true;
-      // need an asynchronous selection update because the bindings have to be
+
+      // Need an asynchronous selection update because the bindings have to be
       // executed to update the selection probably (using the widget queue)
       // this.__syncTargetSelection = true;
       this.__syncModelSelection = true;

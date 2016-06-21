@@ -502,7 +502,12 @@ qx.Class.define("qx.ui.core.scroll.ScrollPane",
       this.getContentElement().scrollToX(value);
     },
 
-    // transform property
+    /**
+     * Property transform to round the incoming scroll X value to integer.
+     *
+     * @param value {Number} The value to transform
+     * @return {Number} The transformed ID
+     */
     _transformScrollX: function(value) {
       return Math.round(value);
     },
@@ -513,7 +518,12 @@ qx.Class.define("qx.ui.core.scroll.ScrollPane",
       this.getContentElement().scrollToY(value);
     },
 
-    // transform property
+    /**
+     * Property transform to round the incoming scroll Y value to integer.
+     *
+     * @param value {Number} The value to transform
+     * @return {Number} The transformed ID
+     */
     _transformScrollY: function(value) {
       return Math.round(value);
     }
