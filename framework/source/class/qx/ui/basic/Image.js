@@ -745,11 +745,19 @@ qx.Class.define("qx.ui.basic.Image",
       // Apply source
       this.__setSource(el, source);
 
-      // Compare with old sizes and relayout if necessary
-      this.__updateContentHint(
-        ResourceManager.getImageWidth(source),
-        ResourceManager.getImageHeight(source)
-      );
+      // Special case for non resource manager handled font icons
+      if (isFont && ResourceManager.getImageWidth(source) === null) {
+        var font = qx.theme.manager.Font.getInstance().resolve(source.match(/@([^/]+)/)[1]);
+        var size = font.getSize() || 40;
+        this.__updateContentHint(size, size);
+      }
+      else {
+        // Compare with old sizes and relayout if necessary
+        this.__updateContentHint(
+          ResourceManager.getImageWidth(source),
+          ResourceManager.getImageHeight(source)
+        );
+      }
     },
 
 
@@ -836,7 +844,16 @@ qx.Class.define("qx.ui.basic.Image",
         var font = qx.theme.manager.Font.getInstance().resolve(source.match(/@([^/]+)/)[1]);
         el.setStyles(font.getStyles());
         el.setStyle("font-size", (this.__width > this.__height ? this.__height : this.__width) + "px");
-        el.setValue(String.fromCharCode(ResourceManager.getData(source)[2]));
+        var resource = ResourceManager.getData(source);
+        if (resource) {
+          el.setValue(String.fromCharCode(resource[2]));
+        }
+        else {
+          var charCode = qx.theme.manager.Font.getInstance().resolve(source.match(/@([^/]+)\/(.*)$/)[2]);
+          this.assertMatch(charCode, /^[0-9a-fA-F]{4}$/, "Font source needs either a glyph name or the unicode number in hex");
+          el.setValue(String.fromCharCode(parseInt(charCode, 16)));
+        }
+
         return;
       }
       else if (el.getNodeName() == "div") {
