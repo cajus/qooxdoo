@@ -217,7 +217,7 @@ def runFontMap(jobconf, confObj):
         for glyph in fo:
             go = fo[glyph]
             if go.unicode > 0:
-                config["mapping"][go.glyphname] = go.unicode
+                config["mapping"][go.glyphname] = [go.unicode, round(go.width / float(go.vwidth), 3)]
 
         # store meta data for this font
         bname = os.path.basename(font)

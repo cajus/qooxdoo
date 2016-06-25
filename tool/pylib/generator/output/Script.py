@@ -129,8 +129,7 @@ class Script(object):
                 for glyphname, code in res.mapping.iteritems():
                   fdsc = "@%s/%s" % (res.alias, glyphname)
                   if not fdsc in result:
-                      #TODO: calculate aspect ratio for glyph
-                      result[fdsc] = [result[resid][1], result[resid][2], code]
+                      result[fdsc] = [result[resid][1], round(result[resid][2] / code[1]), code[0]]
                 del result[resid][4]
 
         # ExtMap returns nested maps
