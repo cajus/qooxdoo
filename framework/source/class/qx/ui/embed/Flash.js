@@ -287,16 +287,23 @@ qx.Class.define("qx.ui.embed.Flash",
       // First make sure the movie is defined and has received a non-zero object id.
       if(typeof(flashFE) != "undefined" && flashFE != null)
       {
+console.log("-> flashFE found");
         try {
+console.log("-> trying PercentLoaded()");
+          var percent = flashFE.PercentLoaded();
+console.log("-> " + percent + "%");
           return flashFE.PercentLoaded();
         }
         catch(err)
         {
+console.log("-> failed PercentLoaded()");
+console.log(err)
           // Not an accessible function yet.
           return 0;
         }
       }
       else {
+console.log("-> no flashFE -> 0%");
         return 0;
       }
     },
