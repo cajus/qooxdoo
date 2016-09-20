@@ -282,8 +282,8 @@ qx.Class.define("qx.ui.embed.Flash",
      */
     getPercentLoaded : function()
     {
-console.log(qx.core.Environment.get("plugin.flash"););
-console.log(qx.core.Environment.get("plugin.flash.version"););
+console.log(qx.core.Environment.get("plugin.flash"));
+console.log(qx.core.Environment.get("plugin.flash.version"));
       var flashFE = this.getFlashElement();
 
       // First make sure the movie is defined and has received a non-zero object id.
