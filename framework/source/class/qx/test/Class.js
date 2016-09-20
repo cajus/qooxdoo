@@ -8,8 +8,7 @@
      2007-2008 1&1 Internet AG, Germany, http://www.1und1.de
 
    License:
-     LGPL: http://www.gnu.org/licenses/lgpl.html
-     EPL: http://www.eclipse.org/org/documents/epl-v10.php
+     MIT: https://opensource.org/licenses/MIT
      See the LICENSE file in the project's top-level directory for details.
 
    Authors:
@@ -45,38 +44,34 @@ qx.Class.define("qx.test.Class",
 
     testOverridePropertyMethod : function() {
       this.require(["qx.debug"]);
-
+      
       var C = qx.Class.define(null, {
         extend : qx.core.Object,
         properties : {
           prop: {
-            check : "Boolean",
+          	init: "unset",
+            check : "String",
             inheritable: true,
             themeable: true
           }
         }
       });
-
-      var methods = [
-        "set", "get", "init", "reset", "refresh",
-        "setRuntime", "resetRuntime",
-        "is", "toggle",
-        "setThemed", "resetThemed"
-      ];
-
-      for (var i = 0; i < methods.length; i++) {
-        var name = methods[i] + "Prop";
-        var members = {};
-        members[name] = function() {};
-        this.assertException(function() {
-          // extract the class define to prevent the generator from parsing this class
-          var Clazz = qx.Class;
-          Clazz.define(null, {
-            extend : C,
-            members : members
-          });
-        }, Error, new RegExp(name), name + " went wrong!");
-      }
+      
+      var D = qx.Class.define(null, {
+      	extend: C,
+      	members: {
+      		setProp: function(value) {
+      			return this.base(arguments, value + "-set");
+      		},
+      		getProp: function() {
+      			return this.base(arguments) + "-get";
+      		}
+      	}
+      });
+      
+      var d = new D();
+      d.setProp("hello");
+      this.assertEquals("hello-set-get", d.getProp());
     },
 
 

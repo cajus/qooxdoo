@@ -8,8 +8,7 @@
      2004-2008 1&1 Internet AG, Germany, http://www.1und1.de
 
    License:
-     LGPL: http://www.gnu.org/licenses/lgpl.html
-     EPL: http://www.eclipse.org/org/documents/epl-v10.php
+     MIT: https://opensource.org/licenses/MIT
      See the LICENSE file in the project's top-level directory for details.
 
    Authors:
@@ -200,6 +199,38 @@ qx.Class.define("qx.bom.Font",
       apply : "_applyLineHeight"
     },
 
+    /**
+     * Characters that are used to test if the font has loaded properly. These
+     * default to "WEei" in `qx.bom.webfont.Validator` and can be overridden
+     * for certain cases like icon fonts that do not provide the predefined
+     * characters.
+     */
+    comparisonString :
+    {
+      check : "String",
+      init : null,
+      nullable : true
+    },
+
+    /**
+     * Version identifier that is appended to the URL to be loaded. Fonts
+     * that are defined thru themes may be managed by the resource manager.
+     * In this case updated fonts persist due to aggressive fontface caching
+     * of some browsers. To get around this, set the `version` property to
+     * the version of your font. It will be appended to the CSS URL and forces
+     * the browser to re-validate.
+     *
+     * The version needs to be URL friendly, so only characters, numbers,
+     * dash and dots are allowed here.
+     */
+    version :
+    {
+      check : function(value) {
+        return value === null || (typeof value === "string" && /^[a-zA-Z0-9.-]+$/.test(value));
+      },
+      init : null,
+      nullable : true
+    },
 
     /** A sorted list of font families */
     family :
