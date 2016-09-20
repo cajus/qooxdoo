@@ -38,6 +38,7 @@ qx.Class.define("playground.view.Editor",
         "playground/editor/mode/javascript/javascript.js",
         "playground/editor/addon/edit/matchbrackets.js",
         "playground/editor/addon/hint/jshint.js",
+        "playground/editor/addon/hint/show-hint.js",
         "playground/editor/addon/lint/lint.js",
         "playground/editor/addon/lint/javascript-lint.js",
         "playground/editor/addon/selection/active-line.js",
@@ -47,7 +48,20 @@ qx.Class.define("playground.view.Editor",
         "playground/editor/addon/fold/brace-fold.js",
         "playground/editor/addon/fold/xml-fold.js",
         "playground/editor/addon/fold/markdown-fold.js",
-        "playground/editor/addon/fold/comment-fold.js"
+        "playground/editor/addon/fold/comment-fold.js",
+        "playground/editor/addon/tern/tern.js",
+        "playground/editor/addon/tern/acorn/acorn.js",
+        "playground/editor/addon/tern/acorn/acorn_loose.js",
+        "playground/editor/addon/tern/acorn/walk.js",
+        "playground/editor/addon/tern/polyfill.js",
+        "playground/editor/addon/tern/lib/signal.js",
+        "playground/editor/addon/tern/lib/tern.js",
+        "playground/editor/addon/tern/lib/def.js",
+        "playground/editor/addon/tern/lib/comment.js",
+        "playground/editor/addon/tern/lib/infer.js",
+        "playground/editor/addon/tern/plugin/doc_comment.js",
+        "playground/editor/addon/tern/defs/ecmascript.js",
+        "playground/editor/addon/tern/defs/qooxdoo.js",
       ];
       var load = function(list) {
         if (list.length == 0) {
@@ -209,7 +223,20 @@ qx.Class.define("playground.view.Editor",
 
         // copy the inital value
         editor.setValue(this.__textarea.getValue() || "");
-        
+
+        // Add tern support
+        var server = new CodeMirror.TernServer({defs: [__ecmascript_defs, __qooxdoo_defs]});
+        editor.setOption("extraKeys", {
+          "Ctrl-Space": function(cm) { server.complete(cm); },
+          "Ctrl-I": function(cm) { server.showType(cm); },
+          "Ctrl-O": function(cm) { server.showDocs(cm); },
+          "Alt-.": function(cm) { server.jumpToDef(cm); },
+          "Alt-,": function(cm) { server.jumpBack(cm); },
+          "Ctrl-Q": function(cm) { server.rename(cm); },
+          "Ctrl-.": function(cm) { server.selectName(cm); }
+        })
+        editor.on("cursorActivity", function(cm) { server.updateArgHints(cm); });
+
         // Adjust initial size
         var bounds = this.__editor.getBounds();
         editor.setSize(bounds.width, bounds.height);

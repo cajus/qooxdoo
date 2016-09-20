@@ -116,6 +116,9 @@
         },
         {
           "uri" : "./resource/${APPLICATION}/editor/addon/lint/lint.css"
+        },
+        {
+          "uri" : "./resource/${APPLICATION}/editor/addon/tern/tern.css"
         }
       ]
     },
