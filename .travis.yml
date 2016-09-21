@@ -5,6 +5,7 @@ addons:
   apt:
     packages:
       - python-sphinx
+      - flashplugin-installer
 env:
   - QXBROWSER=Firefox QXVERSION=latest
   - QXBROWSER=Firefox QXVERSION=esr-latest
