@@ -16,7 +16,7 @@ else
     else
         wget -O /tmp/chrome-stable.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
         dpkg --extract /tmp/chrome-stable.deb chrome-stable
-        cp chrome-stable/opt/google/chrome/PepperFlash/* chrome-x/opt/google/chrome-$QXVersion/PepperFlash
+        cp chrome-stable/opt/google/chrome/PepperFlash/* chrome-x/opt/google/chrome-$QXVERSION/PepperFlash
         mv chrome-x/opt/google/chrome-$QXVERSION chrome
         rm chrome/google-chrome
     fi
