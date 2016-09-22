@@ -8,6 +8,10 @@ if [ $QXBROWSER = Firefox ]; then
     wget -O /tmp/firefox.tar.bz2 "https://download.mozilla.org/?product=firefox-${QXVERSION}&lang=en-US&os=linux64"
     tar xf /tmp/firefox.tar.bz2
 else
+    wget -O /tmp/pepper.deb http://ftp.debian.org/debian/pool/contrib/p/pepperflashplugin-nonfree/pepperflashplugin-nonfree_1.8.3_amd64.deb
+    dpkg -i /tmp/pepper.deb
+    update-pepperflashplugin --install
+
     wget -O /tmp/chrome.deb https://dl.google.com/linux/direct/google-chrome-${QXVERSION}_current_amd64.deb
     dpkg --extract /tmp/chrome.deb chrome-x
     if [ $QXVERSION = stable ]; then
