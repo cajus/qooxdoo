@@ -10,7 +10,7 @@ if [ $QXBROWSER = Firefox ]; then
 else
     wget -O /tmp/pepper.deb http://ftp.debian.org/debian/pool/contrib/p/pepperflashplugin-nonfree/pepperflashplugin-nonfree_1.8.3_amd64.deb
     dpkg -i /tmp/pepper.deb
-    update-pepperflashplugin --install
+    update-pepperflashplugin-nonfree --install
 
     wget -O /tmp/chrome.deb https://dl.google.com/linux/direct/google-chrome-${QXVERSION}_current_amd64.deb
     dpkg --extract /tmp/chrome.deb chrome-x
