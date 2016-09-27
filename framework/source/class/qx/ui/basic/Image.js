@@ -749,10 +749,25 @@ qx.Class.define("qx.ui.basic.Image",
       this.__setSource(el, source);
 
       // Special case for non resource manager handled font icons
-      if (isFont && ResourceManager.getImageWidth(source) === null) {
+      if (isFont) {
+        var size;
         var font = qx.theme.manager.Font.getInstance().resolve(source.match(/@([^/]+)/)[1]);
-        var size = font.getSize() || 40;
+
+        // Adjust size if scaling is applied
+        if (this.getScale()) {
+          size = this.getWidth() > this.getHeight() ? this.getHeight() : this.getWidth();
+        }
+        else {
+          size = font.getSize();
+        }
+
+        // Default to something definitively numeric if nothing set
+        if (!size) {
+          size = 0;
+        }
+
         this.__updateContentHint(size, size);
+        el.setStyle("font-size", size + "px");
       }
       else {
         // Compare with old sizes and relayout if necessary
@@ -763,6 +778,18 @@ qx.Class.define("qx.ui.basic.Image",
       }
     },
 
+    _applyDimension : function()
+    {
+      this.base(arguments);
+      
+      var isFont = this.getSource() && qx.lang.String.startsWith(this.getSource(), "@");
+      if (isFont) {
+        var el = this.getContentElement();
+        if (el) {
+          el.setStyle("font-size", (this.getWidth() > this.getHeight() ? this.getHeight() : this.getWidth()) + "px");
+        }
+      }
+    },
 
     /**
      * Use the infos of the ImageLoader to set an unmanaged image
