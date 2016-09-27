@@ -723,12 +723,13 @@ qx.Class.define("qx.ui.basic.Image",
     __setManagedImage : function(el, source)
     {
       var ResourceManager = qx.util.ResourceManager.getInstance();
+      var isFont = source && qx.lang.String.startsWith(source, "@");
 
       // Try to find a disabled image in registry
       if (!this.getEnabled())
       {
         var disabled = source.replace(/\.([a-z]+)$/, "-disabled.$1");
-        if (ResourceManager.has(disabled))
+        if (!isFont && ResourceManager.has(disabled))
         {
           source = disabled;
           this.addState("replacement");
@@ -740,7 +741,6 @@ qx.Class.define("qx.ui.basic.Image",
       }
 
       // Optimize case for enabled changes when no disabled image was found
-      var isFont = source && qx.lang.String.startsWith(source, "@");
       if (!isFont && el.getSource() === source) {
         return;
       }
