@@ -8,8 +8,7 @@
      2004-2008 1&1 Internet AG, Germany, http://www.1und1.de
 
    License:
-     LGPL: http://www.gnu.org/licenses/lgpl.html
-     EPL: http://www.eclipse.org/org/documents/epl-v10.php
+     MIT: https://opensource.org/licenses/MIT
      See the LICENSE file in the project's top-level directory for details.
 
    Authors:
@@ -41,6 +40,9 @@
  *
  * <a href='http://manual.qooxdoo.org/${qxversion}/pages/widget/image.html' target='_blank'>
  * Documentation of this widget in the qooxdoo manual.</a>
+ * 
+ * NOTE: Instances of this class must be disposed of after use
+ *
  */
 qx.Class.define("qx.ui.basic.Image",
 {
@@ -101,6 +103,7 @@ qx.Class.define("qx.ui.basic.Image",
     {
       check : "Boolean",
       init : false,
+      event : "changeScale",
       themeable : true,
       apply : "_applyScale"
     },
@@ -355,7 +358,7 @@ qx.Class.define("qx.ui.basic.Image",
 
         var isPng = false;
         if (source != null) {
-          isPng = qx.lang.String.endsWith(source, ".png");
+          isPng = source.endsWith(".png");
         }
 
         if (this.getScale() && isPng && qx.core.Environment.get("css.alphaimageloaderneeded")) {
@@ -406,7 +409,8 @@ qx.Class.define("qx.ui.basic.Image",
       }
 
       var element = new (clazz)(tagName);
-      element.setAttribute("$$widget", this.toHashCode());
+      element.connectWidget(this);
+      element.setScale(scale);
       element.setStyles({
         "overflowX": "hidden",
         "overflowY": "hidden",
@@ -421,7 +425,7 @@ qx.Class.define("qx.ui.basic.Image",
 
         if (qx.core.Environment.get("css.alphaimageloaderneeded")) {
           var wrapper = this.__wrapper = new qx.html.Element("div");
-          wrapper.setAttribute("$$widget", this.toHashCode());
+          element.connectWidget(this);
           wrapper.setStyle("position", "absolute");
           wrapper.add(element);
           return wrapper;
@@ -571,8 +575,8 @@ qx.Class.define("qx.ui.basic.Image",
       "mshtml" : function(source)
       {
         var alphaImageLoader = qx.core.Environment.get("css.alphaimageloaderneeded");
-        var isPng = qx.lang.String.endsWith(source, ".png");
-        var isFont = qx.lang.String.startsWith(source, "@");
+        var isPng = source.endsWith(".png");
+        var isFont = source.startsWith("@");
 
         if (isFont) {
           this.__setMode("font");
@@ -628,7 +632,7 @@ qx.Class.define("qx.ui.basic.Image",
         {
           var pixel = "px";
           var styles = {};
-          
+
           //inherit styles from current element
           var currentStyles = currentContentElement.getAllStyles();
           if(currentStyles) {
@@ -796,9 +800,8 @@ qx.Class.define("qx.ui.basic.Image",
         // loading external images via HTTP/HTTPS is a common usecase, as is
         // using data URLs.
         var sourceLC = source.toLowerCase();
-        var startsWith = qx.lang.String.startsWith;
-        if (!startsWith(sourceLC, "http") &&
-            !startsWith(sourceLC, "data:image/"))
+        if (!sourceLC.startsWith("http") &&
+            !sourceLC.startsWith("data:image/"))
         {
           var self = this.self(arguments);
 
@@ -1032,7 +1035,7 @@ qx.Class.define("qx.ui.basic.Image",
   destruct : function() {
     for (var mode in this.__contentElements) {
       if (this.__contentElements.hasOwnProperty(mode)) {
-        this.__contentElements[mode].setAttribute("$$widget", null, true);
+        this.__contentElements[mode].disconnectWidget(this);
       }
     }
 

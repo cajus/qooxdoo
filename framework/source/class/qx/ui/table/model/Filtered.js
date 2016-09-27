@@ -7,10 +7,9 @@
    Copyright:
      2007 by Tartan Solutions, Inc, http://www.tartansolutions.com
 
-    License:
-      LGPL: http://www.gnu.org/licenses/lgpl.html
-      EPL: http://www.eclipse.org/org/documents/epl-v10.php
-      See the LICENSE file in the project's top-level directory for details.
+   License:
+     MIT: https://opensource.org/licenses/MIT
+     See the LICENSE file in the project's top-level directory for details.
 
    Authors:
      * Dan Hummon
@@ -20,6 +19,55 @@
 /**
  * A filtered table model to provide support for hiding and filtering table
  * rows. Any rows that match any applied filters will be hidden.
+
+<pre class='javascript'>
+var model = new qx.ui.table.model.Filtered();
+model.setColumns(["Login", "Name", "Email"], ["login", "name", "email"]);
+
+var table = new qx.ui.table.Table(model);
+
+var data = [{
+  login : "darthvader",
+  name : "Darth Vader",
+  email : "darthvader@tatooine.org"
+}, {
+  login : "anakin",
+  name : "Anakin Skywalker",
+  email : "anakin@skywalker.org"
+}, {
+  login : "luke",
+  name : "Luke Skywalker",
+  email : "luke@tatooine.org"
+}, {
+  login : "obi-wan",
+  name : "Obi-Wan Kenobi",
+  email : "obiwan@jedi.org"
+}, {
+  login : "rey",
+  name : "Rey",
+  email : "rey@jakku.sw"
+}];
+
+model.setDataAsMapArray(data);
+
+this.getRoot().add(table);
+
+var search = new qx.ui.form.TextField();
+search.set({
+  liveUpdate : true,
+  placeholder : "Search login"
+});
+
+search.addListener("changeValue", function(e) {
+  var value = e.getData();
+
+  model.resetHiddenRows();
+  model.addNotRegex(value, "login", true);
+  model.applyFilters();
+});
+
+this.getRoot().add(search, {top : 500, left : 10});
+</pre>
  */
 qx.Class.define("qx.ui.table.model.Filtered",
 {
@@ -30,10 +78,19 @@ qx.Class.define("qx.ui.table.model.Filtered",
   {
     this.base(arguments);
 
-    this.numericAllowed = new Array("==", "!=", ">", "<", ">=", "<=");
-    this.betweenAllowed = new Array("between", "!between");
+    this.__filterTypes = {
+      "==" : "numeric",
+      "!=" : "numeric",
+      ">" : "numeric",
+      "<" : "numeric",
+      "<=" : "numeric",
+      ">=" : "numeric",
+      "between": "between",
+      "!between": "between"
+    };
+
     this.__applyingFilters = false;
-    this.Filters = new Array();
+    this.Filters = [];
 
   },
 
@@ -42,6 +99,7 @@ qx.Class.define("qx.ui.table.model.Filtered",
   {
     __fullArr : null,
     __applyingFilters : null,
+    __filterTypes : null,
 
 
     /**
@@ -50,6 +108,7 @@ qx.Class.define("qx.ui.table.model.Filtered",
      * @param the_needle {String} String to search
      * @param the_haystack {Array} Array, which should be searched
      * @return {Boolean} whether the search string was found.
+     * @deprecated {6.0}
      */
     _js_in_array : function(the_needle, the_haystack)
     {
@@ -87,7 +146,7 @@ qx.Class.define("qx.ui.table.model.Filtered",
      */
     addBetweenFilter : function(filter, value1, value2, target)
     {
-      if (this._js_in_array(filter, this.betweenAllowed) && target != null)
+      if (this.__filterTypes[filter] === "between" && target != null)
       {
         if (value1 != null && value2 != null) {
           var temp = new Array(filter, value1, value2, target);
@@ -123,7 +182,7 @@ qx.Class.define("qx.ui.table.model.Filtered",
     {
       var temp = null;
 
-      if (this._js_in_array(filter, this.numericAllowed) && target != null)
+      if (this.__filterTypes[filter] === "numeric" && target != null)
       {
         if (value1 != null) {
           temp = [filter, value1, target];
@@ -157,7 +216,12 @@ qx.Class.define("qx.ui.table.model.Filtered",
     addRegex : function(regex, target, ignorecase)
     {
       var regexarg;
-      if (ignorecase) { regexarg ='gi'; } else { regexarg ='g'; }
+      if (ignorecase) {
+        regexarg ='gi';
+      } else {
+        regexarg ='g';
+      }
+
       if (regex != null && target != null) {
         var temp = new Array("regex", regex, target, regexarg);
       }
@@ -189,7 +253,12 @@ qx.Class.define("qx.ui.table.model.Filtered",
     addNotRegex : function(regex, target, ignorecase)
     {
       var regexarg;
-      if (ignorecase) { regexarg ='gi'; } else { regexarg ='g'; }
+      if (ignorecase) {
+        regexarg ='gi';
+      } else {
+        regexarg ='g';
+      }
+
       if (regex != null && target != null) {
         var temp = new Array("notregex", regex, target, regexarg);
       }
@@ -212,18 +281,15 @@ qx.Class.define("qx.ui.table.model.Filtered",
       var compareValue;
       var rowArr = this.getData();
       var rowLength = rowArr.length;
-      var count;
-      var hidden = 0;
       var rowsToHide = [];
-      for (var row = 0; row<rowLength;row++)
+
+      for (var row = 0; row < rowLength; row++)
       {
         filter_test = false;
         for (i in this.Filters)
         {
 
-          if (this._js_in_array(this.Filters[i][0],
-                                this.numericAllowed) &&
-              filter_test == false)
+          if (this.__filterTypes[this.Filters[i][0]] === "numeric")
           {
             compareValue = this.getValueById(this.Filters[i][2], row);
             switch(this.Filters[i][0])
@@ -271,9 +337,7 @@ qx.Class.define("qx.ui.table.model.Filtered",
               break;
             }
           }
-          else if (this._js_in_array(this.Filters[i][0],
-                                     this.betweenAllowed) &&
-                   filter_test == false)
+          else if (this.__filterTypes[this.Filters[i][0]] === "between")
           {
             compareValue = this.getValueById(this.Filters[i][3], row);
 
@@ -296,52 +360,52 @@ qx.Class.define("qx.ui.table.model.Filtered",
               break;
             }
           }
-          else if (this.Filters[i][0] == "regex" && filter_test == false)
+          else if (this.Filters[i][0] === "regex")
           {
             compareValue = this.getValueById(this.Filters[i][2], row);
 
             var the_pattern = new RegExp(this.Filters[i][1], this.Filters[i][3]);
             filter_test = the_pattern.test(compareValue);
           }
-          else if (this.Filters[i][0] == "notregex" && filter_test == false)
+          else if (this.Filters[i][0] === "notregex")
           {
             compareValue = this.getValueById(this.Filters[i][2], row);
 
             var the_pattern = new RegExp(this.Filters[i][1], this.Filters[i][3]);
             filter_test = !the_pattern.test(compareValue);
           }
+
+          if (filter_test === true) {
+            break;
+          }
         }
 
         // instead of hiding a single row, push it into the hiding-store for later hiding.
-        if (filter_test == true) {
+        if (filter_test === true) {
           rowsToHide.push(row);
         }
       }
 
-      var rowsToHideLength = rowsToHide.length;
-      for (i = 0; i < rowsToHideLength; i++) {
-        row = rowsToHide[i];
-        count = 1;
-        // count direct follow-up rows
-        while (i + 1 < rowsToHide.length && rowsToHide[i] == rowsToHide[i+1]-1) {
-          count++;
-          i++;
-        }
-        this.hideRows(row - hidden, count, false);
-
-        hidden += count;
+      if (!this.__applyingFilters) {
+        this.__fullArr = rowArr.slice(0);
+        this.__applyingFilters = true;
       }
 
-      var data =
-      {
-        firstRow    : 0,
-        lastRow     : this.getData().length - 1,
-        firstColumn : 0,
-        lastColumn  : this.getColumnCount() - 1
-      };
+      rowArr = rowArr.filter(function(row, index) {
+        return !qx.lang.Array.contains(rowsToHide, index);
+      });
 
-      // Inform the listeners
-      this.fireDataEvent("dataChanged", data);
+      this._rowArr = rowArr;
+
+       var data = {
+         firstRow    : 0,
+         lastRow     : this._rowArr.length - 1,
+         firstColumn : 0,
+         lastColumn  : this.getColumnCount() - 1
+       };
+
+       // Inform the listeners
+       this.fireDataEvent("dataChanged", data);
     },
 
 
@@ -424,7 +488,6 @@ qx.Class.define("qx.ui.table.model.Filtered",
 
   destruct : function()
   {
-    this.__fullArr = this.numericAllowed = this.betweenAllowed =
-      this.Filters = null;
+    this.__fullArr = this.__filterTypes = this.Filters = null;
   }
 });
