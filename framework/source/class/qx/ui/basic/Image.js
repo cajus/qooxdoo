@@ -410,7 +410,6 @@ qx.Class.define("qx.ui.basic.Image",
 
       var element = new (clazz)(tagName);
       element.connectWidget(this);
-      element.setScale(scale);
       element.setStyles({
         "overflowX": "hidden",
         "overflowY": "hidden",
