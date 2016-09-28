@@ -751,7 +751,6 @@ qx.Class.define("qx.ui.basic.Image",
       // Special case for non resource manager handled font icons
       if (isFont) {
         var size;
-        var font = qx.theme.manager.Font.getInstance().resolve(source.match(/@([^/]+)/)[1]);
 
         // Adjust size if scaling is applied
         if (this.getScale()) {
@@ -760,6 +759,7 @@ qx.Class.define("qx.ui.basic.Image",
           size = width > height ? height : width;
         }
         else {
+          var font = qx.theme.manager.Font.getInstance().resolve(source.match(/@([^/]+)/)[1]);
           size = font.getSize();
         }
 
@@ -788,9 +788,15 @@ qx.Class.define("qx.ui.basic.Image",
       if (isFont) {
         var el = this.getContentElement();
         if (el) {
-          var width = this.getWidth() || this.getHeight() || 40;
-          var height = this.getHeight() || this.getWidth() || 40;
-          el.setStyle("font-size", (width > height ? height : width) + "px");
+          if (this.getScale()) {
+            var width = this.getWidth() || this.getHeight() || 40;
+            var height = this.getHeight() || this.getWidth() || 40;
+            el.setStyle("font-size", (width > height ? height : width) + "px");
+          }
+          else {
+            var font = qx.theme.manager.Font.getInstance().resolve(this.getSource().match(/@([^/]+)/)[1]);
+            el.setStyle("font-size", font.getSize() + "px");
+          }
         }
       }
     },
@@ -879,7 +885,14 @@ qx.Class.define("qx.ui.basic.Image",
         el.setStyle("display", "table-cell");
         el.setStyle("vertical-align", "middle");
         el.setStyle("text-align", "center");
-        el.setStyle("font-size", (this.__width > this.__height ? this.__height : this.__width) + "px");
+
+        if (this.getScale()) {
+          el.setStyle("font-size", (this.__width > this.__height ? this.__height : this.__width) + "px");
+        }
+        else {
+          el.setStyle("font-size", font.getSize() + "px");
+        }
+
         var resource = ResourceManager.getData(source);
         if (resource) {
           el.setValue(String.fromCharCode(resource[2]));

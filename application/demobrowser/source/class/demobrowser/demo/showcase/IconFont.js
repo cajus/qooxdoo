@@ -56,7 +56,6 @@ qx.Class.define("demobrowser.demo.showcase.IconFont",
 
       this._initFont();
 
-
       /* Set locale to english to avoid language mix if browser locale is
        * non-english. */
       qx.locale.Manager.getInstance().setLocale("en");
@@ -110,7 +109,7 @@ qx.Class.define("demobrowser.demo.showcase.IconFont",
       var config = {
         fonts: {
           "FontAwesome": {
-            size: 20,
+            size: 40,
             lineHeight: 1,
             comparisonString : "\uf1e3\uf1f7\uf11b\uf19d",
             family: ["FontAwesome"],
