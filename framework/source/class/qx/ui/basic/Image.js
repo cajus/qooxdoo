@@ -757,7 +757,7 @@ qx.Class.define("qx.ui.basic.Image",
         if (this.getScale()) {
           var width = this.getWidth() || this.getHeight() || 40;
           var height = this.getHeight() || this.getWidth() || 40;
-          size = width > height ? height : width;
+          size = width > height ? width : height;
         }
         else {
           size = font.getSize();
@@ -790,7 +790,7 @@ qx.Class.define("qx.ui.basic.Image",
         if (el) {
           var width = this.getWidth() || this.getHeight() || 40;
           var height = this.getHeight() || this.getWidth() || 40;
-          el.setStyle("font-size", (width > height ? height : width) + "px");
+          el.setStyle("font-size", (width > height ? width : height) + "px");
         }
       }
     },
@@ -876,7 +876,7 @@ qx.Class.define("qx.ui.basic.Image",
         var ResourceManager = qx.util.ResourceManager.getInstance();
         var font = qx.theme.manager.Font.getInstance().resolve(source.match(/@([^/]+)/)[1]);
         el.setStyles(font.getStyles());
-        el.setStyle("font-size", (this.__width > this.__height ? this.__height : this.__width) + "px");
+        el.setStyle("font-size", (this.__width > this.__height ? this.__width : this.__height) + "px");
         var resource = ResourceManager.getData(source);
         if (resource) {
           el.setValue(String.fromCharCode(resource[2]));
