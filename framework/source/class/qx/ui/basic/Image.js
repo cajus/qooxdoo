@@ -755,7 +755,9 @@ qx.Class.define("qx.ui.basic.Image",
 
         // Adjust size if scaling is applied
         if (this.getScale()) {
-          size = this.getWidth() > this.getHeight() ? this.getHeight() : this.getWidth();
+          var width = this.getWidth() || this.getHeight() || 40;
+          var height = this.getHeight() || this.getWidth() || 40;
+          size = width > height ? height : width;
         }
         else {
           size = font.getSize();
@@ -786,7 +788,9 @@ qx.Class.define("qx.ui.basic.Image",
       if (isFont) {
         var el = this.getContentElement();
         if (el) {
-          el.setStyle("font-size", (this.getWidth() > this.getHeight() ? this.getHeight() : this.getWidth()) + "px");
+          var width = this.getWidth() || this.getHeight() || 40;
+          var height = this.getHeight() || this.getWidth() || 40;
+          el.setStyle("font-size", (width > height ? height : width) + "px");
         }
       }
     },
