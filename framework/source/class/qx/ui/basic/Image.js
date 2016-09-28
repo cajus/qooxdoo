@@ -876,6 +876,9 @@ qx.Class.define("qx.ui.basic.Image",
         var ResourceManager = qx.util.ResourceManager.getInstance();
         var font = qx.theme.manager.Font.getInstance().resolve(source.match(/@([^/]+)/)[1]);
         el.setStyles(font.getStyles());
+        el.setStyle("display", "table-cell");
+        el.setStyle("vertical-align", "middle");
+        el.setStyle("text-align", "center");
         el.setStyle("font-size", (this.__width > this.__height ? this.__height : this.__width) + "px");
         var resource = ResourceManager.getData(source);
         if (resource) {
