@@ -1598,13 +1598,11 @@ qx.Class.define("qx.ui.core.Widget",
      * @param noFlush {Boolean?} whether the queue should not be flushed (default: flush)
      * @return {Boolean} true, if the widget is currently on the screen
      */
-    isSeeable : function(noFlush)
+    isSeeable : function()
     {
       // Flush the queues because to detect if the widget ins visible, the
       // queues need to be flushed (see bug #5254)
-      if (!noFlush) {
-        qx.ui.core.queue.Manager.flush();
-      }
+      qx.ui.core.queue.Manager.flush();
 
       // if the element is already rendered, a check for the offsetWidth is enough
       var element = this.getContentElement().getDomElement();
@@ -2401,7 +2399,7 @@ qx.Class.define("qx.ui.core.Widget",
       }
 
       // Only act if we're visible, skip the flush
-      if (this.isSeeable(true)) {
+      if (this.isSeeable()) {
 
         this.base(arguments);
 
