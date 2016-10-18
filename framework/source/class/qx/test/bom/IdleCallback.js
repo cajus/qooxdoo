@@ -33,6 +33,7 @@ qx.Class.define("qx.test.bom.IdleCallback",
 
 
     "test: emulated requestIdleCallback" : function() {
+      this.skip();
       var setting = this.stub(qx.core.Environment, "get").withArgs("client.idle");
       setting.returns(false);
 
@@ -48,6 +49,7 @@ qx.Class.define("qx.test.bom.IdleCallback",
     },
 
     "test: emulated cancelIdleCallback" : function() {
+      this.skip();
       var setting = this.stub(qx.core.Environment, "get").withArgs("client.idle");
       setting.returns(false);
 
@@ -55,7 +57,7 @@ qx.Class.define("qx.test.bom.IdleCallback",
       var request = qx.bom.IdleCallback.request(clb);
       qx.bom.IdleCallback.cancel(request);
 
-      this.wait(500, function() {
+      this.wait(2000, function() {
         this.assertNotCalled(clb);
       }, this);
     },
