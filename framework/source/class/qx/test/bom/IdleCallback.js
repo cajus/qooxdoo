@@ -33,7 +33,6 @@ qx.Class.define("qx.test.bom.IdleCallback",
 
 
     "test: emulated requestIdleCallback" : function() {
-      this.skip();
       var setting = this.stub(qx.core.Environment, "get").withArgs("client.idle");
       setting.returns(false);
 
