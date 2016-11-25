@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Skip builds if no tag is set
+if [ "$TRAVIS_TAG" = "" ]; then
+    echo "No TAG: skipping creation of release archive"
+    exit 0
+fi
+
 BASE_DIR="$(git rev-parse --show-toplevel)"
 BRANCH=$(git describe --contains --all HEAD)
 REV=$(git rev-parse --short HEAD)

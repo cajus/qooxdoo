@@ -61,4 +61,5 @@ after_success:
               "  IdentityFile $SSH_FILE" \
               "  LogLevel ERROR" >> ~/.ssh/config
 
-  - ./.travis/build-site.sh && ./.travis/deploy.sh
+  - ./.travis/build-site.sh && ./.travis/make-release-sdk.sh && ./.travis/deploy.sh
+  - ls -la dist
