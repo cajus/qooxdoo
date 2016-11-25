@@ -1,8 +1,13 @@
 #!/bin/bash
 
 # Skip builds if no tag is set
+#if [ "$GH_USER_EMAIL" = "" ]; then
+#  echo "Skipping SDK generation for regular build."
+#  exit 0
+#fi
+
 if [ "$TRAVIS_TAG" = "" ]; then
-    echo "No TAG: skipping creation of release archive"
+    echo "No TAG: skipping creation of release archive."
     exit 0
 fi
 
