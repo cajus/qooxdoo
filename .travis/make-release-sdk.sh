@@ -32,6 +32,7 @@ FILES_TEXT="\( -name "*.py" -o -name "*.sh" -o -name "*.js" -o -name "*.html" -o
 APPLICATIONS="websitewidgetbrowser tutorial todo feedreader mobileshowcase playground showcase widgetbrowser github demobrowser"
 COMPONENTS="apiviewer testrunner server website"
 
+export PYTHONPATH=$BASE_DIR/tool/pylib
 
 function make-release-sdk()
 {
@@ -45,7 +46,7 @@ function make-release-sdk()
     
     echo "  * create readme.html..."
     rm $RELEASE_SDK/readme.rst
-    rst2html $BASE_DIR/readme.rst > $RELEASE_SDK/readme.html
+    rst2html.py $BASE_DIR/readme.rst > $RELEASE_SDK/readme.html
 
     echo "  * mark applications to need generated..."
     for APPLICATION in $APPLICATIONS; do
@@ -83,7 +84,7 @@ function make-release-sdk()
     rm -rf $RELEASE_SDK/tool/admin/
 
     echo "  * adjust line endings to UNIX style..."
-    find $RELEASE_SDK $TEXT_FILES -print0 | xargs -0 dos2unix -q
+    find $RELEASE_SDK $TEXT_FILES -print0 | xargs -0 python tool/pylib/misc/textutil.py --command any2Unix
 
     echo "  * syncing documentation..."
     rm -rf $RELEASE_SDK/documentation/manual/
@@ -269,13 +270,8 @@ echo "Build source     : $BASE_DIR"
 echo "Target           : $TARGET_DIR"
 echo "-------------------------------------------------------------------------"
 
-
-echo "!!!!!!!!!! open TODOs !!!!!!!!"
 cd $BASE_DIR
 tool/admin/bin/bumpqxversion.py $FRAMEWORK_VERSION
-git submodule update --init &> /dev/null
-npm install
-grunt setup
 distclean
 
 (
