@@ -24,9 +24,9 @@ install:
   - ./.travis/browser-setup.sh
   - export CHROME_BIN=`pwd`/chrome/google-chrome
   - export PATH=`pwd`/firefox:$PATH
-  - cd framework
   - npm install
   - grunt setup
+  - cd framework
   - if [ "$QXBROWSER" != "" ]; then ./generate.py -sI test-source; fi
 before_script:
   - export DISPLAY=:99.0

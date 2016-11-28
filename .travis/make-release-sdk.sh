@@ -206,7 +206,7 @@ function build-framework-css()
 function build-website-api()
 {
     echo "Building website API..."
-    (cd $BASE_DIR/component/standalone/website && grunt api > /dev/null)
+    (cd $BASE_DIR/component/standalone/website && grunt api)
 }
 
 
