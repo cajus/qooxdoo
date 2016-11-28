@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 
 # Skip builds if no tag is set
 #if [ "$GH_USER_EMAIL" = "" ]; then
@@ -6,10 +6,10 @@
 #  exit 0
 #fi
 
-if [ "$TRAVIS_TAG" = "" ]; then
-    echo "No TAG: skipping creation of release archive."
-    exit 0
-fi
+#if [ "$TRAVIS_TAG" = "" ]; then
+#    echo "No TAG: skipping creation of release archive."
+#    exit 0
+#fi
 
 BASE_DIR="$(git rev-parse --show-toplevel)"
 BRANCH=$(git describe --contains --all HEAD)
