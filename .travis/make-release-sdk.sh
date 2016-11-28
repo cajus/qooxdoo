@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash
 
 # Skip builds if no tag is set
 #if [ "$GH_USER_EMAIL" = "" ]; then
@@ -84,7 +84,7 @@ function make-release-sdk()
     rm -rf $RELEASE_SDK/tool/admin/
 
     echo "  * adjust line endings to UNIX style..."
-    find $RELEASE_SDK $TEXT_FILES -print0 | xargs -0 python tool/pylib/misc/textutil.py --command any2Unix
+    find $RELEASE_SDK $FILES_TEXT -print0 | xargs -0 python tool/pylib/misc/textutil.py --command any2Unix
 
     echo "  * syncing documentation..."
     rm -rf $RELEASE_SDK/documentation/manual/
@@ -274,7 +274,6 @@ cd $BASE_DIR
 tool/admin/bin/bumpqxversion.py $FRAMEWORK_VERSION
 distclean
 
-(
 build-framework-api && \
 build-framework-dependencies && \
 build-framework-css && \
@@ -286,10 +285,3 @@ build-docs && \
 make-release-sdk && \
 make-release-zip && \
 clean-up
-) 2> build.log
-
-if [ $? -ne 0 ]; then
-    echo "Build failed!"
-    cat build.log
-    exit 1
-fi
