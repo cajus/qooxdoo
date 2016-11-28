@@ -104,7 +104,8 @@ function make-release-zip()
     echo "Building release archive..."
     rm -f $TARGET_DIR/qooxdoo-${FRAMEWORK_VERSION}-sdk.zip
     cd $TARGET_DIR/temp/sdk
-    zip -rq9 $TARGET_DIR/qooxdoo-${FRAMEWORK_VERSION}-sdk.zip qooxdoo-${FRAMEWORK_VERSION}-sdk
+    #zip -rq9 $TARGET_DIR/qooxdoo-${FRAMEWORK_VERSION}-sdk.zip qooxdoo-${FRAMEWORK_VERSION}-sdk
+    zip -rq9 $TARGET_DIR/sdk.zip qooxdoo-${FRAMEWORK_VERSION}-sdk
 }
 
 
