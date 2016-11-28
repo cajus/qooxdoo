@@ -18,7 +18,7 @@ cache:
   directories:
   - /tmp/qx5.1
 before_install:
-  - gem install sass
+  - gem install sass -v 3.4.20
   - pip install docutils
 install:
   - ./.travis/browser-setup.sh
