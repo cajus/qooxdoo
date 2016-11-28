@@ -69,4 +69,4 @@ deploy:
   file: dist/*.zip
   on:
     repo: cajus/qooxdoo
-    branch: build-sdk-release
+    tags: true
