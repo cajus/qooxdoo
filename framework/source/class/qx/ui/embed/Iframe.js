@@ -245,6 +245,9 @@ qx.Class.define("qx.ui.embed.Iframe",
      */
     _onIframeLoad : function(e)
     {
+      // Workaround for Chrome: touch DOM element
+      this.getContentElement() && this.getContentElement().getDomElement();
+
       this._applyNativeContextMenu(this.getNativeContextMenu(), null);
       this._applyNativeHelp(this.getNativeHelp(), null);
 
