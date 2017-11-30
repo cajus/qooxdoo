@@ -50,7 +50,7 @@ module.exports = function(config) {
       'ChromeBetaSL': {
         base: 'SauceLabs',
         browserName: 'chrome',
-        platform: 'linux',
+        platform: 'Windows 10',
         version: 'beta'
       },
       'SafariSL': {
