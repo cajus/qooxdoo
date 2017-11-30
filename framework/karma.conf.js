@@ -98,7 +98,7 @@ module.exports = function(config) {
 
     // level of logging
     // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
-    logLevel: config.LOG_DISABLE,
+    logLevel: config.LOG_ERROR,
 
 
     // enable / disable watching file and executing tests whenever any file changes
@@ -131,10 +131,10 @@ module.exports = function(config) {
 
     // Concurrency level
     // how many browser should be started simultaneous
-    concurrency: 5,
+    concurrency: 2,
 
     // proxy settings without coverage (proxying resources, including PHP scripts to a PHP enabled webserver)
-    // Note: you have to start a local php server with 'php -S 127.0.0.1:31323' in this folder
+    // Note: you have to start a local php server with 'php -S 127.0.0.1:31323 -t ..' in this folder
     proxies: {
       '/script/': 'http://127.0.0.1:31323/framework/test/script/',
       '/resource/': 'http://127.0.0.1:31323/framework/source/resource/',
