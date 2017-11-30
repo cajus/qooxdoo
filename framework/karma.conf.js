@@ -110,7 +110,7 @@ module.exports = function(config) {
     browsers: ['ChromeSL'],
 
     client: {
-      captureConsole: true
+      captureConsole: false
     },
 
     browserNoActivityTimeout: 6000000,
