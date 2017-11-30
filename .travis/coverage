@@ -1,0 +1,9 @@
+#!/bin/sh
+. ../.travis/test-common
+setup
+
+karma start --reporters=dots,saucelabs,coverage,coveralls karma-coverage.conf.js --hostname="$(hostname)"
+RET=$?
+
+tear_down
+exit $RET

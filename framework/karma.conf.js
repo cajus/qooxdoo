@@ -33,7 +33,7 @@ module.exports = function(config) {
       tunnelIdentifier: process.env.TRAVIS_JOB_NUMBER,
       startConnect: false,
       testName: 'Qooxdoo Unit-Tests',
-//      recordScreenshots: false,
+      recordScreenshots: false,
       public: 'public',
       connectOptions: {
         noSslBumpDomains: "all"
@@ -63,6 +63,11 @@ module.exports = function(config) {
         platform: 'Windows 10',
         browserName: 'microsoftedge',
         version: '15'
+      },
+      'IESL': {
+        base: 'SauceLabs',
+        platform: 'Windows 8.1',
+        browserName: 'internet explorer'
       },
       'FirefoxSL': {
         base: 'SauceLabs',
