@@ -30,7 +30,6 @@ install:
 stages:
   - name: Lint
   - name: Unit-Tests
-  - name: Coverage
   - name: Deploy
     if: repo = qooxdoo/qooxdoo AND ( branch = master OR tag =~ ^v[0-9] )
 
@@ -41,9 +40,7 @@ jobs:
 
     - stage: Unit-Tests
       script: ../.travis/test ChromeSL,ChromeBetaSL,FirefoxSL,FirefoxBetaSL,SafariSL,EdgeSL,IESL
-
-    - stage: Coverage
-      script: ../.travis/coverage
+    - script: ../.travis/coverage
 
     - stage: Deploy
       script: ../.travis/deploy
