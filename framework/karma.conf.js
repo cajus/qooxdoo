@@ -131,7 +131,7 @@ module.exports = function(config) {
 
     // Concurrency level
     // how many browser should be started simultaneous
-    concurrency: Infinity,
+    concurrency: 5,
 
     // proxy settings without coverage (proxying resources, including PHP scripts to a PHP enabled webserver)
     // Note: you have to start a local php server with 'php -S 127.0.0.1:31323' in this folder
