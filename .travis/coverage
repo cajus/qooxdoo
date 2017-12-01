@@ -1,9 +1,13 @@
 #!/bin/sh
-. ../.travis/test-common
-setup
+export PATH=$PWD/node_modules/karma/bin:$PATH
+
+./generate.py -sI test-source
+php -S 0.0.0.0:31323 -t .. &> /dev/null &
+sleep 3
 
 karma start --reporters=dots,saucelabs,coverage,coveralls karma-coverage.conf.js --hostname="$(hostname)"
 RET=$?
 
-tear_down
+pkill -f 'php -S 0.0.0.0:31323' &> /dev/null
 exit $RET
+
