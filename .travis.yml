@@ -39,7 +39,8 @@ jobs:
       script: ../.travis/lint
 
     - stage: Unit-Tests
-      script: ../.travis/test ChromeSL,ChromeBetaSL,FirefoxSL,FirefoxBetaSL,SafariSL,EdgeSL,IESL
+      #script: ../.travis/test ChromeSL,ChromeBetaSL,FirefoxSL,FirefoxBetaSL,SafariSL,EdgeSL,IESL
+      script: ../.travis/test ChromeSL,ChromeBetaSL,FirefoxSL,FirefoxBetaSL
     - script: ../.travis/coverage
 
     - stage: Deploy
