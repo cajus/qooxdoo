@@ -1,9 +1,8 @@
 #!/bin/sh
 export PATH=$PWD/node_modules/karma/bin:$PATH
 
-./generate.py -sI test-source
 php -S 0.0.0.0:31323 -t .. &> /dev/null &
-sleep 3
+./generate.py -sI test-source
 
 karma start --reporters=dots,saucelabs --browsers=$1 --hostname="$(hostname)"
 RET=$?

@@ -3,9 +3,8 @@ export PATH=$PWD/node_modules/karma/bin:$PATH
 export DISPLAY=:99.0
 sh -e /etc/init.d/xvfb start
 
+php -S 0.0.0.0:31323 &> /dev/null &
 ./generate.py -sI test-source
-php -S 0.0.0.0:31323 -t .. &> /dev/null &
-sleep 3
 
 karma start --reporters=dots,saucelabs,coverage,coveralls karma-coverage.conf.js --hostname="$(hostname)"
 RET=$?
